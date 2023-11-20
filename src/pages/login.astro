@@ -1,0 +1,45 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { LoginForm } from "../components/solid/LoginForm";
+
+export const prerender = false;
+
+if (Astro.cookies.get("session")) {
+  return Astro.redirect("/");
+}
+---
+
+<Layout title="Auth">
+  <main>
+    <h1>Authenticate</h1>
+    <div class="container">
+      <LoginForm client:load />
+    </div>
+  </main>
+</Layout>
+
+<style>
+  main {
+    margin: auto;
+    padding: 1rem;
+    width: 800px;
+    max-width: calc(100% - 2rem);
+    color: white;
+    font-size: 20px;
+    line-height: 1.6;
+  }
+
+  h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 1em;
+  }
+
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+</style>
