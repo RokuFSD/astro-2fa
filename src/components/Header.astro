@@ -21,7 +21,7 @@ const { userName } = Astro.props;
         <p>Hi there,</p>
         <p>{userName}</p>
       </div>
-      <form class="logout" action="/api/logout" method="POST">
+      <form class="logout" action="/api/auth/logout" method="POST">
         <button type="submit" class="btn">Logout</button>
       </form>
     </div>

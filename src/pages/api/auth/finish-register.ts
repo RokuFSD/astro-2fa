@@ -1,7 +1,7 @@
 import { z } from "astro/zod";
 import type { APIRoute } from "astro";
-import prisma from "../../lib/prisma";
 import bcrypt from "bcryptjs";
+import prisma from "../../../lib/prisma";
 
 let formErrors: FinishRegisterFlattenedErrors | undefined;
 

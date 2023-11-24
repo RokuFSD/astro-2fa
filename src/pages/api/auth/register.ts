@@ -1,9 +1,9 @@
 import type { APIRoute } from "astro";
 import { z } from "astro/zod";
-import prisma from "../../lib/prisma";
+import prisma from "../../../lib/prisma";
 import totp from "totp-generator";
-import { generateBase32Secret } from "../../utils/base32";
-import { emailExpiration } from "../../utils/date-constants";
+import { generateBase32Secret } from "../../../utils/base32";
+import { emailExpiration } from "../../../utils/date-constants";
 
 let registerErrors: RegisterFlattenedErrors | undefined;
 

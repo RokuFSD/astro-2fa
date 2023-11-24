@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { z } from "astro/zod";
-import prisma from "../../lib/prisma";
+import prisma from "../../../lib/prisma";
 
 let verificationError: VerificationFlattenedErros | undefined;
 

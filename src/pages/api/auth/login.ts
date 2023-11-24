@@ -1,8 +1,8 @@
 import type { APIRoute } from "astro";
 import { z } from "astro/zod";
-import prisma from "../../lib/prisma";
+import prisma from "../../../lib/prisma";
 import bcrypt from "bcryptjs";
-import { getSessionExpires } from "../../utils/date-constants";
+import { getSessionExpires } from "../../../utils/date-constants";
 
 let loginErrors: LoginFlattenedErrors | undefined;
 

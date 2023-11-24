@@ -6,7 +6,7 @@ import { FormError } from "./FormError";
 import { Button } from "../ui/Btn";
 
 async function verifyEmail(formData: FormData) {
-  const response = await fetch("/api/verify-email", {
+  const response = await fetch("/api/verification/verify-email", {
     method: "POST",
     body: formData,
   });

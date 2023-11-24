@@ -6,7 +6,7 @@ import "./form.styles.css";
 import { Button } from "../ui/Btn";
 
 async function finishRegister(formData: FormData) {
-  const response = await fetch("/api/finish-register", {
+  const response = await fetch("/api/auth/finish-register", {
     method: "POST",
     body: formData,
   });

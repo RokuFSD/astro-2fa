@@ -6,7 +6,7 @@ import { FormError } from "./FormError";
 import { Button } from "../ui/Btn";
 
 async function register(formData: FormData) {
-  const response = await fetch("/api/register", {
+  const response = await fetch("/api/auth/register", {
     method: "POST",
     body: formData,
   });
