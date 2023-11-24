@@ -1,4 +1,4 @@
-import "./FieldError.css";
+import "./field-error.styles.css";
 
 interface Props {
   error: string;

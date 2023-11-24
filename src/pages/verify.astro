@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { VerifyForm } from "../components/solid/VerifyForm.tsx";
+import { VerifyForm } from "../components/solid/form/VerifyForm";
 
 export const prerender = false;
 
@@ -12,11 +12,7 @@ if (continueCookie) {
   return Astro.redirect("/finish-register");
 }
 
-if (sessionCookie) {
-  return Astro.redirect("/register");
-}
-
-if (!emailVerificationCookie) {
+if (sessionCookie || !emailVerificationCookie) {
   return Astro.redirect("/register");
 }
 ---
@@ -29,37 +25,3 @@ if (!emailVerificationCookie) {
     </div>
   </main>
 </Layout>
-
-<style>
-  main {
-    margin: auto;
-    padding: 1rem;
-    width: 800px;
-    max-width: calc(100% - 2rem);
-    color: white;
-    font-size: 20px;
-    line-height: 1.6;
-  }
-
-  h1 {
-    font-size: 4rem;
-    font-weight: 700;
-    line-height: 1;
-    text-align: center;
-    margin-bottom: 1em;
-  }
-
-  h2 {
-    font-size: 2rem;
-    font-weight: 700;
-    line-height: 1;
-    text-align: center;
-    margin-bottom: 1em;
-  }
-
-  .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-</style>

@@ -1,9 +1,9 @@
 import { createResource, createSignal, Show } from "solid-js";
-import "./LoginForm.css";
-import type { VerificationFlattenedErros } from "../../pages/api/verify-email";
+import "./form.styles.css";
+import type { VerificationFlattenedErros } from "../../../pages/api/verification/verify-email";
 import { FieldError } from "./FieldError";
 import { FormError } from "./FormError";
-import { Button } from "./Btn";
+import { Button } from "../ui/Btn";
 
 async function verifyEmail(formData: FormData) {
   const response = await fetch("/api/verify-email", {

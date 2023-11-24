@@ -27,7 +27,7 @@ const user = await prisma.session.findUnique({
 ---
 
 <Layout title="Welcome to Astro.">
-  <Header loggedIn={true} userName={user?.user.name!} />
+  <Header userName={user?.user.name!} />
   <main>
     <svg
       class="astro-a"

@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { UserInfoForm } from "../components/solid/UserInfoForm.tsx";
+import { UserInfoForm } from "../components/solid/form/UserInfoForm";
 
 export const prerender = false;
 
@@ -26,35 +26,11 @@ const email = continueCookie.value;
 </Layout>
 
 <style>
-  main {
-    margin: auto;
-    padding: 1rem;
-    width: 800px;
-    max-width: calc(100% - 2rem);
-    color: white;
-    font-size: 20px;
-    line-height: 1.6;
-  }
-
-  h1 {
-    font-size: 4rem;
-    font-weight: 700;
-    line-height: 1;
-    text-align: center;
-    margin-bottom: 1em;
-  }
-
   h2 {
     font-size: 2rem;
     font-weight: 700;
     line-height: 1;
     text-align: center;
     margin-bottom: 1em;
-  }
-
-  .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 </style>

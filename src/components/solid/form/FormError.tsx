@@ -1,4 +1,4 @@
-import "./FormError.css";
+import "./form-error.styles.css";
 
 interface Props {
   error: string;

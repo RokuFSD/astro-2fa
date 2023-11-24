@@ -1,9 +1,9 @@
 import { createSignal, createResource, Show } from "solid-js";
-import type { FinishRegisterFlattenedErrors } from "../../pages/api/finish-register";
+import type { FinishRegisterFlattenedErrors } from "../../../pages/api/auth/finish-register";
 import { FieldError } from "./FieldError";
 import { FormError } from "./FormError";
-import "./LoginForm.css";
-import { Button } from "./Btn";
+import "./form.styles.css";
+import { Button } from "../ui/Btn";
 
 async function finishRegister(formData: FormData) {
   const response = await fetch("/api/finish-register", {

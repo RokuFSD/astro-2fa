@@ -1,15 +1,16 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { RegisterForm } from "../components/solid/RegisterForm";
+import { RegisterForm } from "../components/solid/form/RegisterForm";
 
 export const prerender = false;
 
-if (Astro.cookies.get("session")) {
-  return Astro.redirect("/");
-}
-
+const sessionCookie = Astro.cookies.get("session");
 const emailVerificationCookie = Astro.cookies.get("email_verification");
 const continueCookie = Astro.cookies.get("continue_registration");
+
+if (sessionCookie) {
+  return Astro.redirect("/");
+}
 
 if (emailVerificationCookie) {
   return Astro.redirect("/verify");
@@ -31,15 +32,3 @@ if (continueCookie) {
     </div>
   </main>
 </Layout>
-
-<style>
-  main {
-    margin: auto;
-    padding: 1rem;
-    width: 800px;
-    max-width: calc(100% - 2rem);
-    color: white;
-    font-size: 20px;
-    line-height: 1.6;
-  }
-</style>

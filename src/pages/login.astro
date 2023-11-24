@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { LoginForm } from "../components/solid/LoginForm";
+import { LoginForm } from "../components/solid/form/LoginForm";
 
 export const prerender = false;
 
@@ -20,15 +20,3 @@ if (Astro.cookies.get("session")) {
     </div>
   </main>
 </Layout>
-
-<style>
-  main {
-    margin: auto;
-    padding: 1rem;
-    width: 800px;
-    max-width: calc(100% - 2rem);
-    color: white;
-    font-size: 20px;
-    line-height: 1.6;
-  }
-</style>

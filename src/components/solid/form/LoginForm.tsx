@@ -1,9 +1,9 @@
 import { createResource, createSignal, Show, createEffect } from "solid-js";
-import "./LoginForm.css";
-import type { LoginFlattenedErrors } from "../../pages/api/login";
+import "./form.styles.css";
+import type { LoginFlattenedErrors } from "../../../pages/api/auth/login";
 import { FieldError } from "./FieldError";
 import { FormError } from "./FormError";
-import { Button } from "./Btn";
+import { Button } from "../ui/Btn";
 
 async function login(formData: FormData) {
   const response = await fetch("/api/login", {
