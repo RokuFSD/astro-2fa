@@ -1,6 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/Card.astro";
+import Header from "../components/Header.astro";
+import prisma from "../lib/prisma";
 
 export const prerender = false;
 
@@ -9,9 +11,23 @@ export const prerender = false;
 if (!Astro.cookies.get("session")) {
   return Astro.redirect("/login");
 }
+
+const user = await prisma.session.findUnique({
+  where: {
+    id: Astro.cookies.get("session")!.value,
+  },
+  select: {
+    user: {
+      select: {
+        name: true,
+      },
+    },
+  },
+});
 ---
 
 <Layout title="Welcome to Astro.">
+  <Header loggedIn={true} userName={user?.user.name!} />
   <main>
     <svg
       class="astro-a"
@@ -85,7 +101,7 @@ if (!Astro.cookies.get("session")) {
   }
   .astro-a {
     position: absolute;
-    top: -32px;
+    top: 4rem;
     left: 50%;
     transform: translatex(-50%);
     width: 220px;

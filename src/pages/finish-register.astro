@@ -1,0 +1,60 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { UserInfoForm } from "../components/solid/UserInfoForm.tsx";
+
+export const prerender = false;
+
+const sessionCookie = Astro.cookies.get("session");
+const continueCookie = Astro.cookies.get("continue_registration");
+
+if (sessionCookie || !continueCookie) {
+  return Astro.redirect("/register");
+}
+
+const email = continueCookie.value;
+---
+
+<Layout title="Auth">
+  <main>
+    <h1>Finish!</h1>
+    <div class="container">
+      <h2>{email}</h2>
+      <UserInfoForm client:load />
+      <!-- <LoginForm client:load /> -->
+    </div>
+  </main>
+</Layout>
+
+<style>
+  main {
+    margin: auto;
+    padding: 1rem;
+    width: 800px;
+    max-width: calc(100% - 2rem);
+    color: white;
+    font-size: 20px;
+    line-height: 1.6;
+  }
+
+  h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 1em;
+  }
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 1em;
+  }
+
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+</style>

@@ -14,6 +14,9 @@ if (Astro.cookies.get("session")) {
     <h1>Authenticate</h1>
     <div class="container">
       <LoginForm client:load />
+      <div>
+        <a href="/register" class="link">No account? Register</a>
+      </div>
     </div>
   </main>
 </Layout>
@@ -27,19 +30,5 @@ if (Astro.cookies.get("session")) {
     color: white;
     font-size: 20px;
     line-height: 1.6;
-  }
-
-  h1 {
-    font-size: 4rem;
-    font-weight: 700;
-    line-height: 1;
-    text-align: center;
-    margin-bottom: 1em;
-  }
-
-  .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 </style>

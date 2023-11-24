@@ -1,7 +1,9 @@
-import { createResource, createSignal, Show } from "solid-js";
+import { createResource, createSignal, Show, createEffect } from "solid-js";
 import "./LoginForm.css";
-import type { FlattenedErrors } from "../../pages/api/login";
+import type { LoginFlattenedErrors } from "../../pages/api/login";
 import { FieldError } from "./FieldError";
+import { FormError } from "./FormError";
+import { Button } from "./Btn";
 
 async function login(formData: FormData) {
   const response = await fetch("/api/login", {
@@ -13,17 +15,32 @@ async function login(formData: FormData) {
     return data;
   }
 
-  // navigate to home
   window.location.href = "/";
 }
 
 export function LoginForm() {
   const [formData, setFormData] = createSignal<FormData>();
 
-  const [loginErrors] = createResource<FlattenedErrors, FormData>(
+  const [loginErrors] = createResource<LoginFlattenedErrors, FormData>(
     formData,
     login,
   );
+
+  let usernameInput: HTMLInputElement;
+  let passwordInput: HTMLInputElement;
+
+  createEffect(() => {
+    if (loginErrors()?.formErrors.length) {
+      usernameInput.focus();
+      return;
+    }
+    if (loginErrors()?.fieldErrors?.password) {
+      passwordInput.focus();
+    }
+    if (loginErrors()?.fieldErrors?.username) {
+      usernameInput.focus();
+    }
+  });
 
   async function onSubmit(e: SubmitEvent) {
     e.preventDefault();
@@ -33,25 +50,44 @@ export function LoginForm() {
     <form method="post" class="form" onSubmit={onSubmit}>
       <div class="form-group">
         <label for="username">Username</label>
-        <input type="text" name="username" id="username" required />
+        <input
+          ref={(el) => (usernameInput = el)}
+          type="text"
+          name="username"
+          id="username"
+          required
+          aria-invalid={loginErrors()?.fieldErrors?.username ? "true" : "false"}
+          aria-describedby="username-error"
+        />
         <Show when={loginErrors()?.fieldErrors?.username}>
           <FieldError
+            id="username-error"
             error={loginErrors()?.fieldErrors?.username![0] as string}
           />
         </Show>
       </div>
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" name="password" id="password" required />
+        <input
+          ref={(el) => (passwordInput = el)}
+          type="password"
+          name="password"
+          id="password"
+          required
+          aria-invalid={loginErrors()?.fieldErrors?.password ? "true" : "false"}
+          aria-describedby="password-error"
+        />
         <Show when={loginErrors()?.fieldErrors?.password}>
           <FieldError
+            id="password-error"
             error={loginErrors()?.fieldErrors?.password![0] as string}
           />
         </Show>
       </div>
-      <button type="submit" class="btn">
-        Login
-      </button>
+      <Show when={loginErrors()?.formErrors?.length}>
+        <FormError error={loginErrors()?.formErrors[0] as string} />
+      </Show>
+      <Button text="Login" />
     </form>
   );
 }

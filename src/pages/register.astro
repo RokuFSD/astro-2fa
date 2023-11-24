@@ -1,0 +1,45 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { RegisterForm } from "../components/solid/RegisterForm";
+
+export const prerender = false;
+
+if (Astro.cookies.get("session")) {
+  return Astro.redirect("/");
+}
+
+const emailVerificationCookie = Astro.cookies.get("email_verification");
+const continueCookie = Astro.cookies.get("continue_registration");
+
+if (emailVerificationCookie) {
+  return Astro.redirect("/verify");
+}
+
+if (continueCookie) {
+  return Astro.redirect("/finish-register");
+}
+---
+
+<Layout title="Auth">
+  <main>
+    <h1>Registration</h1>
+    <div class="container">
+      <RegisterForm client:load />
+      <div>
+        <a href="/login" class="link">Already have an account? Login</a>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  main {
+    margin: auto;
+    padding: 1rem;
+    width: 800px;
+    max-width: calc(100% - 2rem);
+    color: white;
+    font-size: 20px;
+    line-height: 1.6;
+  }
+</style>

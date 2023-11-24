@@ -11,18 +11,6 @@
   margin-bottom: 1rem;
 }
 
-.btn {
-  border: none;
-  background-color: #4caf50;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
 .btn:is(:hover, :focus-within) {
   background-color: #3e8e41;
 }
