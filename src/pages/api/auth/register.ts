@@ -4,6 +4,8 @@ import prisma from "../../../lib/prisma";
 import totp from "totp-generator";
 import { generateBase32Secret } from "../../../utils/base32";
 import { emailExpiration } from "../../../utils/date-constants";
+import { ZodCustomError } from "../../../utils/zod-error";
+import { ErrorMessages } from "../../../lib/constants";
 
 let registerErrors: RegisterFlattenedErrors | undefined;
 
@@ -12,6 +14,8 @@ export type RegisterFlattenedErrors = z.inferFlattenedErrors<typeof formSchema>;
 const formSchema = z.object({
   email: z.string().email("Wrong email format"),
 });
+
+const secret = generateBase32Secret();
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   try {
@@ -27,22 +31,13 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     });
 
     if (user) {
-      const error = new z.ZodError([]);
-      error.addIssue({
-        code: "custom",
-        message: "User already exists. Please login.",
-        path: [],
-      });
-      throw error;
+      throw ZodCustomError({ message: ErrorMessages.USER_ALREADY_EXISTS });
     }
-    // TODO: Initiate registration process
 
     // Generate TOTP
-    const secret = generateBase32Secret();
     const TOTP = totp(secret);
 
     // Send email with TOPT
-
     console.log(TOTP);
 
     // Create a Verification record with the TOTP
@@ -74,6 +69,6 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     if (error instanceof Error) {
       return new Response(error.message, { status: 400 });
     }
-    return new Response("Something went wrong", { status: 400 });
+    return new Response(ErrorMessages.DEFAULT, { status: 400 });
   }
 };

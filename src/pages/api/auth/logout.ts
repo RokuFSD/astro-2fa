@@ -1,8 +1,10 @@
 import type { APIRoute } from "astro";
 import prisma from "../../../lib/prisma";
+import { CookiesKeys } from "../../../lib/constants";
+import { getSessionCookieValue } from "../../../utils/cookies-handler";
 
 export const POST: APIRoute = async ({ cookies, redirect }) => {
-  const sessionId = cookies.get("session")?.value;
+  const sessionId = getSessionCookieValue(CookiesKeys.SESSION, cookies);
 
   // Remove session cookie
   cookies.delete("session", {

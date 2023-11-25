@@ -1,20 +1,27 @@
 import type { APIRoute } from "astro";
 import { z } from "astro/zod";
 import prisma from "../../../lib/prisma";
-import bcrypt from "bcryptjs";
 import { getSessionExpires } from "../../../utils/date-constants";
+import { ErrorMessages } from "../../../lib/constants";
+import { ZodCustomError } from "../../../utils/zod-error";
+import { getPasswordManager } from "../../../lib/password-handler";
 
 let loginErrors: LoginFlattenedErrors | undefined;
 
 export type LoginFlattenedErrors = z.inferFlattenedErrors<typeof formSchema>;
 
 const formSchema = z.object({
-  username: z.string().min(5, "Username must be at least 5 characters long"),
+  username: z.string().min(5, ErrorMessages.INVALID_USERNAME),
   password: z
     .string()
-    .min(8, "Password must be at least 8 characters long")
-    .regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, "Password is invalid"),
+    .min(8, ErrorMessages.INVALID_PASSWORD_LENGTH)
+    .regex(
+      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+      ErrorMessages.INVALID_PASSWORD,
+    ),
 });
+
+const passwordManager = getPasswordManager();
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   try {
@@ -31,27 +38,18 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     });
 
     if (!user) {
-      const error = new z.ZodError([]);
-      error.addIssue({
-        code: "custom",
-        message: "Invalid username or password",
-        path: [],
-      });
-      throw error;
+      throw ZodCustomError({ message: ErrorMessages.INVALID_LOGIN });
     }
 
     // Compare passwords with bcrypt
 
-    const passwordMatches = await bcrypt.compare(password, user.password);
+    const passwordMatches = await passwordManager.verifyPassword(
+      password,
+      user.password,
+    );
 
     if (!passwordMatches) {
-      const error = new z.ZodError([]);
-      error.addIssue({
-        code: "custom",
-        message: "Invalid username or password",
-        path: [],
-      });
-      throw error;
+      throw ZodCustomError({ message: ErrorMessages.INVALID_LOGIN });
     }
 
     const sessionExpires = getSessionExpires();
@@ -84,6 +82,6 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     if (error instanceof Error) {
       return new Response(error.message, { status: 400 });
     }
-    return new Response("Something went wrong", { status: 500 });
+    return new Response(ErrorMessages.DEFAULT, { status: 500 });
   }
 };
